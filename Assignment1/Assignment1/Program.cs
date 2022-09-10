@@ -31,7 +31,10 @@ namespace Assignment1
             Debug.Assert(BigNumberCalculator.GetTwosComplementOrNull("0b1000") == "0b1000");
             Debug.Assert(BigNumberCalculator.GetTwosComplementOrNull("0b0000") == "0b0000");
 
-
+            Debug.Assert(BigNumberCalculator.ToBinaryOrNull("0b00001101011") == "0b00001101011");
+            Debug.Assert(BigNumberCalculator.ToBinaryOrNull("0x00F24") == "0b00000000111100100100");
+            Debug.Assert(BigNumberCalculator.ToBinaryOrNull("123") == "0b01111011");
+            Debug.Assert(BigNumberCalculator.ToBinaryOrNull("-123") == "0b10000101");
 
             Console.WriteLine("===== FINISHED =====");
 
