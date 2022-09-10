@@ -27,6 +27,12 @@ namespace Assignment1
             Debug.Assert(BigNumberCalculator.GetOnesComplementOrNull("") == null);
             Debug.Assert(BigNumberCalculator.GetOnesComplementOrNull("-") == null);
 
+            Debug.Assert(BigNumberCalculator.GetTwosComplementOrNull("0b0000111010110") == "0b1111000101010");
+            Debug.Assert(BigNumberCalculator.GetTwosComplementOrNull("0b1000") == "0b1000");
+            Debug.Assert(BigNumberCalculator.GetTwosComplementOrNull("0b0000") == "0b0000");
+
+
+
             Console.WriteLine("===== FINISHED =====");
 
         }

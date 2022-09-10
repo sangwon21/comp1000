@@ -15,6 +15,24 @@ namespace Assignment1
             this.mode = mode;
         }
 
+        private static ref StringBuilder ReverseStringBuilder(ref StringBuilder stringbuilder)
+        {
+            int left = 0;
+            int right = stringbuilder.Length - 1;
+
+            while (left < right)
+            {
+                char c = stringbuilder[left];
+                stringbuilder[left] = stringbuilder[right];
+                stringbuilder[right] = c;
+
+                left++;
+                right--;
+            }
+
+            return ref stringbuilder;
+        }
+
         private static string intToNotationForm(int num)
         {
             if (num < 10)
@@ -192,15 +210,18 @@ namespace Assignment1
                 return null;
             }
 
-            int carry = 0;
+            int carry = 1;
+            int outBitCount = num.Length - 2;
 
             // 접두사 붙이기
             StringBuilder outStringBuilder = new StringBuilder(oneComplement.Length + 1);
-            outStringBuilder.Append("0b");
+            // 0b0000111010110 - 원본
+            // 0b1111000101001 - 1의 보수
+            // 0b1111000101010 - 1 더한 값
 
-            for (int i = 0; i < oneComplement.Length; i++)
+            for (int i = 0; i < oneComplement.Length - 2; i++)
             {
-                char c = oneComplement[oneComplement.Length - i];
+                char c = oneComplement[oneComplement.Length - 1 - i];
 
                 int value = CharToIntValue(c) + carry;
 
@@ -214,10 +235,16 @@ namespace Assignment1
                     carry = 0;
                 }
 
-                outStringBuilder.Append(value + '0');
+                outStringBuilder.Append((char)(value + '0'));
             }
 
-            return outStringBuilder.ToString();
+            // 원본 길이만큼만 보장
+            if (outStringBuilder.Length > outBitCount)
+            {
+                outStringBuilder.Remove(outBitCount, outStringBuilder.Length);
+            }
+
+            return ReverseStringBuilder(ref outStringBuilder).Insert(0, "0b").ToString();
         }
 
         public static string ToBinaryOrNull(string num)
