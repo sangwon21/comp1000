@@ -160,7 +160,6 @@ namespace Assignment1
                 return outResult;
             }
 
-
             outStringBuilder.Insert(2, '0');
             return outStringBuilder.ToString();
         }
@@ -179,7 +178,9 @@ namespace Assignment1
                 return num;
             }
 
-            return BinaryToNotationForm(num, 3);
+            string numInBinary = ToBinaryOrNull(num);
+
+            return BinaryToHex(numInBinary);
         }
 
         public static string ToDecimalOrNull(string num)
@@ -196,7 +197,9 @@ namespace Assignment1
                 return num;
             }
 
-            return BinaryToNotationForm(num, 4);
+            string binary = ToBinaryOrNull(num);
+
+            return BinaryToDecimal(binary);
         }
 
         public string AddOrNull(string num1, string num2, out bool bOverflow)
@@ -208,53 +211,93 @@ namespace Assignment1
                 return null;
             }
 
-            string num1InBinary = ToBinaryOrNull(num1);
-            string num2InBinary = ToBinaryOrNull(num2);
+            string binary1 = ToBinaryOrNull(num1);
+            string binary2 = ToBinaryOrNull(num2);
 
-            // TODO: StringBuilder에 0b 0x + - 추가
-            StringBuilder outStringBuilder = new StringBuilder(this.bitCount + 2);
-            int shorterBitCount = num1InBinary.Length > num2InBinary.Length ? num2InBinary.Length : num1InBinary.Length;
-
-            int carry = 0;
-            for (int i = 0; i < shorterBitCount; i++)
-            {
-                int num1IntValue = CharToInt(num1InBinary[i]);
-                int num2IntValue = CharToInt(num2InBinary[i]);
-
-                int addedValue = num1IntValue + num2IntValue + carry;
-
-                if (addedValue > 2)
-                {
-                    addedValue -= 2;
-                    carry = 1;
-                }
-                else
-                {
-                    carry = 0;
-                }
-
-                outStringBuilder.Append(addedValue);
-            }
-
-            if (outStringBuilder.Length > this.bitCount)
-            {
-                bOverflow = true;
-                return null;
-            }
-
-            if (this.mode == EMode.Decimal)
+            int maxBitCount = binary1.Length > binary2.Length ? binary1.Length - 2 : binary2.Length - 2;
+            if (maxBitCount > this.bitCount)
             {
                 return null;
             }
 
-            return null;
+            string maxAbsBitCountForNegativeDecimal = GetMaxDecimal(this.bitCount);
+            string maxAbsBitCountForPositiveDecimal = SubtractTwoPositiveDecimalNumbers(maxAbsBitCountForNegativeDecimal, "1");
 
+            string decimal1 = ToDecimalOrNull(num1);
+            string decimal2 = ToDecimalOrNull(num2);
+
+            string result = AddTwoDecimalNumbers(decimal1, decimal2);
+
+            if (result[0] != '-')
+            {
+                string bigger = GetBiggerPositiveDecimalNum(maxAbsBitCountForPositiveDecimal, result);
+                if (bigger == result)
+                {
+                    bOverflow = true;
+                    string difference = SubtractTwoPositiveDecimalNumbers(result, maxAbsBitCountForPositiveDecimal);
+                    difference = SubtractTwoPositiveDecimalNumbers(difference, "1");
+
+                    result = SubtractTwoPositiveDecimalNumbers(maxAbsBitCountForNegativeDecimal, difference).Insert(0, "-");
+                }
+            }
+            else
+            {
+                string resultWithoutMinus = result.Substring(1);
+                string bigger = GetBiggerPositiveDecimalNum(maxAbsBitCountForNegativeDecimal, resultWithoutMinus);
+                if (bigger != maxAbsBitCountForNegativeDecimal)
+                {
+                    bOverflow = true;
+                    string difference = SubtractTwoPositiveDecimalNumbers(result, maxAbsBitCountForNegativeDecimal);
+                    difference = SubtractTwoPositiveDecimalNumbers(difference, "1");
+
+                    result = SubtractTwoPositiveDecimalNumbers(maxAbsBitCountForPositiveDecimal, difference);
+                }
+            }
+
+            if (this.mode == EMode.Binary)
+            {
+                string binaryResult = ToBinaryOrNull(result);
+                int differenceInBitCount = this.bitCount - (binaryResult.Length - 2);
+
+                for (int i = 0; i < differenceInBitCount; i++)
+                {
+                    if (binaryResult[2] == '0')
+                    {
+                        binaryResult = binaryResult.Insert(2, "0");
+                    }
+                    else
+                    {
+                        binaryResult = binaryResult.Insert(2, "1");
+                    }
+                }
+
+                return binaryResult;
+            }
+            return result;
         }
 
         public string SubtractOrNull(string num1, string num2, out bool bOverflow)
         {
             bOverflow = false;
-            return null;
+
+            if (CheckNotation(num1) == ENotation.Not_Supported || CheckNotation(num2) == ENotation.Not_Supported)
+            {
+                return null;
+            }
+
+            string decimal1 = ToDecimalOrNull(num1);
+            string decimal2 = ToDecimalOrNull(num2);
+
+            if (decimal2[0] == '-')
+            {
+                decimal2 = decimal2.Substring(1);
+            }
+            else
+            {
+                decimal2 = decimal2.Insert(0, "-");
+            }
+
+            return AddOrNull(decimal1, decimal2, out bOverflow);
         }
 
         private static ref StringBuilder ReverseStringBuilder(ref StringBuilder stringbuilder)
@@ -275,46 +318,293 @@ namespace Assignment1
             return ref stringbuilder;
         }
 
-        private static string intToNotationForm(int num)
+        private static string IntToHex(int num)
         {
             if (num < 10)
             {
                 return num.ToString();
             }
 
-            return ((num - 10) + 'A').ToString();
+            return ((char)((num - 10) + 'A')).ToString();
         }
 
-        private static string BinaryToNotationForm(string num, int expotential)
+        private static string BinaryToHex(string numInBinary)
         {
-            string numInBinary = ToBinaryOrNull(num);
+            int expotential = 4;
+
             StringBuilder outStringBuilder = new StringBuilder(numInBinary.Length / expotential);
+            numInBinary = numInBinary.Substring(2);
 
-            return null;
-            /*   numInBinary.Reverse().toString();
 
-               for (int i = 0; i < num.Length / expotential - 1; i++)
-               {
-                   int value = num[expotential * i + 0] * 1;
-                   value += num[expotential * i + 1] * 2;
-                   value += num[expotential * i + 2] * 4;
-                   value += num[expotential * i + 3] * 8;
+            if ((numInBinary.Length) % 4 != 0)
+            {
+                int target = CharToInt(numInBinary[0]);
+                int remain = 4 - (numInBinary.Length) % 4;
 
-                   outStringBuilder.Append(intToNotationForm(value));
-               }
+                for (int i = 0; i < remain; i++)
+                {
+                    if (target % 2 == 0)
+                    {
+                        numInBinary = numInBinary.Insert(0, "0");
+                        continue;
+                    }
+                    numInBinary = numInBinary.Insert(0, "1");
+                }
+            }
 
-               for (int i = 0; i < num.Length % expotential; i++)
-               {
-                   int quotient = num.Length / expotential;
-                   int value = num[3 * quotient + i] * Pow(2, i);
+            StringBuilder toReverseStringBuilder = new StringBuilder(numInBinary);
+            ReverseStringBuilder(ref toReverseStringBuilder);
+            string reversedNumInBinary = toReverseStringBuilder.ToString();
 
-                   outStringBuilder.Append(intToNotationForm(value));
-               }
+            // 1000 0100 1001 0110 0101 1101 0110 1111
+            for (int i = 0; i < reversedNumInBinary.Length / expotential - 1; i++)
+            {
+                int value = CharToInt(reversedNumInBinary[expotential * i + 0]) * 1;
+                value += CharToInt(reversedNumInBinary[expotential * i + 1]) * 2;
+                value += CharToInt(reversedNumInBinary[expotential * i + 2]) * 4;
+                value += CharToInt(reversedNumInBinary[expotential * i + 3]) * 8;
 
-               string outString = outStringBuilder.ToString();
-               outString.Reverse();
+                outStringBuilder.Append(IntToHex(value));
+            }
 
-               return outString;*/
+            int restIndex = expotential * (reversedNumInBinary.Length / expotential - 1);
+            string lastDigit = ReversedBinaryInFourLetterToHex(reversedNumInBinary.Substring(restIndex));
+            outStringBuilder.Append(lastDigit);
+
+            return ReverseStringBuilder(ref outStringBuilder).Insert(0, "0x").ToString();
+        }
+
+        private static string ReversedBinaryInFourLetterToHex(string binary)
+        {
+            int result = 0;
+            int accumulatedTwo = 1;
+            for (int i = 0; i < binary.Length; i++)
+            {
+                if (binary[i] == '0')
+                {
+                    continue;
+                }
+                result += accumulatedTwo;
+                accumulatedTwo *= 2;
+            }
+
+            return IntToChar(result).ToString();
+        }
+
+        private static string BinaryToDecimal(string binary)
+        {
+            string decimalString = "0";
+            string twoes = "1";
+            bool bNegative = false;
+
+            if (binary[2] == '1')
+            {
+                bNegative = true;
+            }
+
+            for (int i = binary.Length - 1; i > 2; i--)
+            {
+                if (binary[i] == '1')
+                {
+                    decimalString = AddTwoDecimalNumbers(twoes, decimalString);
+                }
+
+                twoes = AddTwoDecimalNumbers(twoes, twoes);
+            }
+
+            if (bNegative)
+            {
+                decimalString = SubtractTwoPositiveDecimalNumbers(twoes, decimalString);
+                decimalString = decimalString.Insert(0, "-");
+            }
+
+            return decimalString;
+        }
+
+        private static string GetMaxDecimal(int bitCount)
+        {
+            string result = "1";
+
+            if (bitCount < 1)
+            {
+                return result;
+            }
+
+            for (int i = 0; i < bitCount - 1; i++)
+            {
+                result = AddTwoDecimalNumbers(result, result);
+            }
+
+            return result;
+        }
+
+        private static string GetBiggerPositiveDecimalNum(string num1, string num2)
+        {
+            if (num1.Length > num2.Length)
+            {
+                return num1;
+            }
+            if (num2.Length > num1.Length)
+            {
+                return num2;
+            }
+
+            for (int i = 0; i < num1.Length; i++)
+            {
+                if (num1[i] > num2[i])
+                {
+                    return num1;
+                }
+                else if (num1[i] < num2[i])
+                {
+                    return num2;
+                }
+            }
+            return num1;
+        }
+
+        private static string AddTwoDecimalNumbers(string bigger, string smaller)
+        {
+            bool bNegative = false;
+
+            // 음수일 때 처리
+            if (bigger[0] == '-' && smaller[0] == '-')
+            {
+                bNegative = true;
+                bigger = bigger.Substring(1);
+                smaller = smaller.Substring(1);
+            }
+            else if (bigger[0] == '-' || smaller[0] == '-')
+            {
+                if (bigger[0] == '-')
+                {
+                    bigger = bigger.Substring(1);
+                    string result = GetBiggerPositiveDecimalNum(bigger, smaller);
+                    if (result == bigger)
+                    {
+                        return SubtractTwoPositiveDecimalNumbers(bigger, smaller).Insert(0, "-");
+                    }
+                    return SubtractTwoPositiveDecimalNumbers(smaller, bigger);
+
+                }
+                else
+                {
+                    smaller = smaller.Substring(1);
+                    string result = GetBiggerPositiveDecimalNum(bigger, smaller);
+                    if (result == smaller)
+                    {
+                        return SubtractTwoPositiveDecimalNumbers(smaller, bigger).Insert(0, "-");
+                    }
+                    return SubtractTwoPositiveDecimalNumbers(bigger, smaller);
+                }
+            }
+
+
+            if (bigger.Length < smaller.Length)
+            {
+                string tmp = bigger;
+                bigger = smaller;
+                smaller = tmp;
+            }
+
+            StringBuilder outStringBuilder = new StringBuilder(bigger.Length + 1);
+
+            int differenceInDigits = bigger.Length - smaller.Length;
+            for (int i = 0; i < differenceInDigits; i++)
+            {
+                smaller = smaller.Insert(0, "0");
+            }
+
+            int carry = 0;
+            for (int i = 0; i < bigger.Length; i++)
+            {
+                int digit = CharToInt(bigger[bigger.Length - 1 - i]) + CharToInt(smaller[smaller.Length - 1 - i]) + carry;
+
+
+                if (digit >= 10)
+                {
+                    digit -= 10;
+                    carry = 1;
+                }
+                else
+                {
+                    carry = 0;
+                }
+
+                outStringBuilder.Append(IntToChar(digit));
+            }
+
+            if (carry != 0)
+            {
+                outStringBuilder.Append(IntToChar(carry));
+            }
+
+            if (bNegative)
+            {
+                outStringBuilder.Append('-');
+            }
+
+            return ReverseStringBuilder(ref outStringBuilder).ToString();
+        }
+
+        // 선조건: bigger, smaller 모두 양수
+        private static string SubtractTwoPositiveDecimalNumbers(string bigger, string smaller)
+        {
+            string result = GetBiggerPositiveDecimalNum(bigger, smaller);
+
+            if (result == smaller)
+            {
+                string tmp = bigger;
+                bigger = smaller;
+                smaller = tmp;
+            }
+
+
+            StringBuilder outStringBuilder = new StringBuilder(bigger.Length + 1);
+
+            int differenceInDigits = bigger.Length - smaller.Length;
+            for (int i = 0; i < differenceInDigits; i++)
+            {
+                smaller = smaller.Insert(0, "0");
+            }
+
+
+            bool bBorrow = false;
+            for (int i = 0; i < bigger.Length; i++)
+            {
+                int digit = CharToInt(bigger[bigger.Length - 1 - i]) - CharToInt(smaller[smaller.Length - 1 - i]);
+
+                if (bBorrow)
+                {
+                    digit -= 1;
+                }
+
+                if (digit < 0)
+                {
+                    bBorrow = true;
+                    digit += 10;
+                }
+                else
+                {
+                    bBorrow = false;
+                }
+
+                outStringBuilder.Append(IntToChar((digit)));
+            }
+
+            string resultStr = ReverseStringBuilder(ref outStringBuilder).ToString();
+
+            while (resultStr[0] == '0')
+            {
+                if (resultStr == "0")
+                {
+                    return resultStr;
+                }
+
+                resultStr = resultStr.Remove(0, 1);
+            }
+
+            return resultStr;
         }
 
         // 0 ~ 9 혹은 A ~ F 까지 숫자만 받는다
@@ -330,6 +620,11 @@ namespace Assignment1
 
         private static char IntToChar(int digit)
         {
+            if (digit >= 10)
+            {
+                return (char)((digit - 10 + 'A'));
+            }
+
             return (char)((digit + '0'));
         }
 
