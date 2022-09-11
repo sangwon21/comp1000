@@ -6,13 +6,13 @@ namespace Assignment1
 
     public class BigNumberCalculator
     {
-        private int bitCount;
-        private EMode mode;
+        private int mBitCount;
+        private EMode mMode;
 
         public BigNumberCalculator(int bitCount, EMode mode)
         {
-            this.bitCount = bitCount;
-            this.mode = mode;
+            this.mBitCount = bitCount;
+            this.mMode = mode;
         }
 
         // num의 1의 보수를 2진수 포맷으로 반환합니다.
@@ -221,12 +221,12 @@ namespace Assignment1
             string binary2 = ToBinaryOrNull(num2);
 
             int maxBitCount = binary1.Length > binary2.Length ? binary1.Length - 2 : binary2.Length - 2;
-            if (maxBitCount > this.bitCount)
+            if (maxBitCount > this.mBitCount)
             {
                 return null;
             }
 
-            string maxAbsBitCountForNegativeDecimal = GetMaxDecimal(this.bitCount);
+            string maxAbsBitCountForNegativeDecimal = GetMaxDecimal(this.mBitCount);
             string maxAbsBitCountForPositiveDecimal = SubtractTwoPositiveDecimalNumbers(maxAbsBitCountForNegativeDecimal, "1");
 
             string decimal1 = ToDecimalOrNull(num1);
@@ -260,10 +260,10 @@ namespace Assignment1
                 }
             }
 
-            if (this.mode == EMode.Binary)
+            if (this.mMode == EMode.Binary)
             {
                 string binaryResult = ToBinaryOrNull(result);
-                int differenceInBitCount = this.bitCount - (binaryResult.Length - 2);
+                int differenceInBitCount = this.mBitCount - (binaryResult.Length - 2);
 
                 for (int i = 0; i < differenceInBitCount; i++)
                 {
@@ -298,14 +298,14 @@ namespace Assignment1
             string binary2 = ToBinaryOrNull(num2);
 
             int maxBitCount = binary1.Length > binary2.Length ? binary1.Length - 2 : binary2.Length - 2;
-            if (maxBitCount > this.bitCount)
+            if (maxBitCount > this.mBitCount)
             {
                 return null;
             }
 
             if (decimal1 == decimal2)
             {
-                if (binary1.Length - 2 > this.bitCount)
+                if (binary1.Length - 2 > this.mBitCount)
                 {
                     return null;
                 }
@@ -323,11 +323,11 @@ namespace Assignment1
                     }
                 }
 
-                if (mode == EMode.Binary)
+                if (this.mMode == EMode.Binary)
                 {
-                    StringBuilder binaryZero = new StringBuilder(bitCount + 2);
+                    StringBuilder binaryZero = new StringBuilder(this.mBitCount + 2);
                     binaryZero.Append("0b");
-                    for (int i = 0; i < bitCount; i++)
+                    for (int i = 0; i < this.mBitCount; i++)
                     {
                         binaryZero.Append("0");
                     }
