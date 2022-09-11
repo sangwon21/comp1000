@@ -64,7 +64,7 @@ namespace Assignment1
             {
                 char c = oneComplement[oneComplement.Length - 1 - i];
 
-                int value = CharToInt(c) + carry;
+                int value = FromCharToInt(c) + carry;
 
                 if (value >= 2)
                 {
@@ -76,7 +76,7 @@ namespace Assignment1
                     carry = 0;
                 }
 
-                outStringBuilder.Append(IntToChar(value));
+                outStringBuilder.Append(FromIntToChar(value));
             }
 
             // 원본 길이만큼만 보장
@@ -110,7 +110,7 @@ namespace Assignment1
                 num = num.Substring(2);
                 foreach (char c in num)
                 {
-                    int value = CharToInt(c);
+                    int value = FromCharToInt(c);
 
                     outHexStringBuilder.Append(ToStringInFourLetterBinary(value));
                 }
@@ -138,7 +138,7 @@ namespace Assignment1
 
             while (quotient != null && quotient != "")
             {
-                int digit = CharToInt(quotient[quotient.Length - 1]);
+                int digit = FromCharToInt(quotient[quotient.Length - 1]);
 
                 if (digit % 2 == 0)
                 {
@@ -186,7 +186,7 @@ namespace Assignment1
 
             string numInBinary = ToBinaryOrNull(num);
 
-            return BinaryToHex(numInBinary);
+            return FromBinaryToHex(numInBinary);
         }
 
         public static string ToDecimalOrNull(string num)
@@ -205,7 +205,7 @@ namespace Assignment1
 
             string binary = ToBinaryOrNull(num);
 
-            return BinaryToDecimal(binary);
+            return FromBinaryToDecimal(binary);
         }
 
         public string AddOrNull(string num1, string num2, out bool bOverflow)
@@ -366,7 +366,7 @@ namespace Assignment1
             return ref stringbuilder;
         }
 
-        private static string IntToHex(int num)
+        private static string FromIntToHex(int num)
         {
             if (num < 10)
             {
@@ -376,7 +376,7 @@ namespace Assignment1
             return ((char)((num - 10) + 'A')).ToString();
         }
 
-        private static string BinaryToHex(string numInBinary)
+        private static string FromBinaryToHex(string numInBinary)
         {
             int expotential = 4;
 
@@ -386,7 +386,7 @@ namespace Assignment1
 
             if ((numInBinary.Length) % 4 != 0)
             {
-                int target = CharToInt(numInBinary[0]);
+                int target = FromCharToInt(numInBinary[0]);
                 int remain = 4 - (numInBinary.Length) % 4;
 
                 for (int i = 0; i < remain; i++)
@@ -407,22 +407,22 @@ namespace Assignment1
             // 1000 0100 1001 0110 0101 1101 0110 1111
             for (int i = 0; i < reversedNumInBinary.Length / expotential - 1; i++)
             {
-                int value = CharToInt(reversedNumInBinary[expotential * i + 0]) * 1;
-                value += CharToInt(reversedNumInBinary[expotential * i + 1]) * 2;
-                value += CharToInt(reversedNumInBinary[expotential * i + 2]) * 4;
-                value += CharToInt(reversedNumInBinary[expotential * i + 3]) * 8;
+                int value = FromCharToInt(reversedNumInBinary[expotential * i + 0]) * 1;
+                value += FromCharToInt(reversedNumInBinary[expotential * i + 1]) * 2;
+                value += FromCharToInt(reversedNumInBinary[expotential * i + 2]) * 4;
+                value += FromCharToInt(reversedNumInBinary[expotential * i + 3]) * 8;
 
-                outStringBuilder.Append(IntToHex(value));
+                outStringBuilder.Append(FromIntToHex(value));
             }
 
             int restIndex = expotential * (reversedNumInBinary.Length / expotential - 1);
-            string lastDigit = ReversedBinaryInFourLetterToHex(reversedNumInBinary.Substring(restIndex));
+            string lastDigit = FromReversedBinaryInFourLetterToHex(reversedNumInBinary.Substring(restIndex));
             outStringBuilder.Append(lastDigit);
 
             return ReverseStringBuilder(ref outStringBuilder).Insert(0, "0x").ToString();
         }
 
-        private static string ReversedBinaryInFourLetterToHex(string binary)
+        private static string FromReversedBinaryInFourLetterToHex(string binary)
         {
             int result = 0;
             int accumulatedTwo = 1;
@@ -436,10 +436,10 @@ namespace Assignment1
                 accumulatedTwo *= 2;
             }
 
-            return IntToChar(result).ToString();
+            return FromIntToChar(result).ToString();
         }
 
-        private static string BinaryToDecimal(string binary)
+        private static string FromBinaryToDecimal(string binary)
         {
             string decimalString = "0";
             string twoes = "1";
@@ -576,7 +576,7 @@ namespace Assignment1
             int carry = 0;
             for (int i = 0; i < bigger.Length; i++)
             {
-                int digit = CharToInt(bigger[bigger.Length - 1 - i]) + CharToInt(smaller[smaller.Length - 1 - i]) + carry;
+                int digit = FromCharToInt(bigger[bigger.Length - 1 - i]) + FromCharToInt(smaller[smaller.Length - 1 - i]) + carry;
 
 
                 if (digit >= 10)
@@ -589,12 +589,12 @@ namespace Assignment1
                     carry = 0;
                 }
 
-                outStringBuilder.Append(IntToChar(digit));
+                outStringBuilder.Append(FromIntToChar(digit));
             }
 
             if (carry != 0)
             {
-                outStringBuilder.Append(IntToChar(carry));
+                outStringBuilder.Append(FromIntToChar(carry));
             }
 
             if (bNegative)
@@ -630,7 +630,7 @@ namespace Assignment1
             bool bBorrow = false;
             for (int i = 0; i < bigger.Length; i++)
             {
-                int digit = CharToInt(bigger[bigger.Length - 1 - i]) - CharToInt(smaller[smaller.Length - 1 - i]);
+                int digit = FromCharToInt(bigger[bigger.Length - 1 - i]) - FromCharToInt(smaller[smaller.Length - 1 - i]);
 
                 if (bBorrow)
                 {
@@ -647,7 +647,7 @@ namespace Assignment1
                     bBorrow = false;
                 }
 
-                outStringBuilder.Append(IntToChar((digit)));
+                outStringBuilder.Append(FromIntToChar((digit)));
             }
 
             string resultStr = ReverseStringBuilder(ref outStringBuilder).ToString();
@@ -666,7 +666,7 @@ namespace Assignment1
         }
 
         // 0 ~ 9 혹은 A ~ F 까지 숫자만 받는다
-        private static int CharToInt(char c)
+        private static int FromCharToInt(char c)
         {
             if ('0' <= c && c <= '9')
             {
@@ -676,7 +676,7 @@ namespace Assignment1
             return c - 'A' + 10;
         }
 
-        private static char IntToChar(int digit)
+        private static char FromIntToChar(int digit)
         {
             if (digit >= 10)
             {
@@ -799,7 +799,7 @@ namespace Assignment1
 
             for (int i = 0; i < numInDecimal.Length; i++)
             {
-                int digit = CharToInt(numInDecimal[i]);
+                int digit = FromCharToInt(numInDecimal[i]);
 
                 if (bRemainder)
                 {
@@ -829,17 +829,6 @@ namespace Assignment1
             }
 
             return quotient.ToString();
-        }
-
-        private static int Pow(int x, int y)
-        {
-            int outResult = 1;
-            for (int i = 0; i < y; i++)
-            {
-                outResult *= x;
-            }
-
-            return outResult;
         }
     }
 }
