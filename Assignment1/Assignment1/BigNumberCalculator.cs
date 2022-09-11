@@ -7,12 +7,12 @@ namespace Assignment1
     public class BigNumberCalculator
     {
         private int mBitCount;
-        private EMode MMode;
+        private EMode mMode;
 
         public BigNumberCalculator(int bitCount, EMode mode)
         {
             this.mBitCount = bitCount;
-            this.MMode = mode;
+            this.mMode = mode;
         }
 
         // num의 1의 보수를 2진수 포맷으로 반환합니다.
@@ -260,7 +260,7 @@ namespace Assignment1
                 }
             }
 
-            if (this.MMode == EMode.Binary)
+            if (this.mMode == EMode.Binary)
             {
                 string binaryResult = ToBinaryOrNull(result);
                 int differenceInBitCount = this.mBitCount - (binaryResult.Length - 2);
@@ -323,7 +323,7 @@ namespace Assignment1
                     }
                 }
 
-                if (this.MMode == EMode.Binary)
+                if (this.mMode == EMode.Binary)
                 {
                     StringBuilder binaryZero = new StringBuilder(this.mBitCount + 2);
                     binaryZero.Append("0b");
