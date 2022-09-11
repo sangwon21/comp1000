@@ -119,6 +119,12 @@ namespace Assignment1
             }
 
             // 10진수
+
+            if (num == "0")
+            {
+                return "0b0";
+            }
+
             bool bNegativeFlag = false;
 
             if (notation == ENotation.Decimal && num.StartsWith('-'))
@@ -231,7 +237,7 @@ namespace Assignment1
             if (result[0] != '-')
             {
                 string bigger = GetBiggerPositiveDecimalNum(maxAbsBitCountForPositiveDecimal, result);
-                if (bigger == result)
+                if (bigger == result && result != maxAbsBitCountForPositiveDecimal)
                 {
                     bOverflow = true;
                     string difference = SubtractTwoPositiveDecimalNumbers(result, maxAbsBitCountForPositiveDecimal);
@@ -244,7 +250,7 @@ namespace Assignment1
             {
                 string resultWithoutMinus = result.Substring(1);
                 string bigger = GetBiggerPositiveDecimalNum(maxAbsBitCountForNegativeDecimal, resultWithoutMinus);
-                if (bigger != maxAbsBitCountForNegativeDecimal)
+                if (bigger == resultWithoutMinus && resultWithoutMinus != maxAbsBitCountForNegativeDecimal)
                 {
                     bOverflow = true;
                     string difference = SubtractTwoPositiveDecimalNumbers(result, maxAbsBitCountForNegativeDecimal);
@@ -287,6 +293,36 @@ namespace Assignment1
 
             string decimal1 = ToDecimalOrNull(num1);
             string decimal2 = ToDecimalOrNull(num2);
+
+            if (decimal1 == decimal2)
+            {
+                string binary1 = ToBinaryOrNull(num1);
+
+                if (binary1[2] == '1')
+                {
+                    bOverflow = true;
+                    for (int i = 3; i < binary1.Length; i++)
+                    {
+                        if (binary1[i] != '0')
+                        {
+                            bOverflow = false;
+                            break;
+                        }
+                    }
+                }
+
+                if (mode == EMode.Binary)
+                {
+                    StringBuilder binaryZero = new StringBuilder(bitCount + 2);
+                    binaryZero.Append("0b");
+                    for (int i = 0; i < bitCount; i++)
+                    {
+                        binaryZero.Append("0");
+                    }
+                    return binaryZero.ToString();
+                }
+                return "0";
+            }
 
             if (decimal2[0] == '-')
             {
@@ -380,11 +416,11 @@ namespace Assignment1
             int accumulatedTwo = 1;
             for (int i = 0; i < binary.Length; i++)
             {
-                if (binary[i] == '0')
+                if (binary[i] == '1')
                 {
-                    continue;
+                    result += accumulatedTwo;
                 }
-                result += accumulatedTwo;
+
                 accumulatedTwo *= 2;
             }
 
@@ -479,6 +515,11 @@ namespace Assignment1
                 if (bigger[0] == '-')
                 {
                     bigger = bigger.Substring(1);
+                    if (bigger == smaller)
+                    {
+                        return "0";
+                    }
+
                     string result = GetBiggerPositiveDecimalNum(bigger, smaller);
                     if (result == bigger)
                     {
@@ -490,6 +531,11 @@ namespace Assignment1
                 else
                 {
                     smaller = smaller.Substring(1);
+                    if (bigger == smaller)
+                    {
+                        return "0";
+                    }
+
                     string result = GetBiggerPositiveDecimalNum(bigger, smaller);
                     if (result == smaller)
                     {
@@ -659,6 +705,11 @@ namespace Assignment1
                 return ENotation.Not_Supported;
             }
 
+            if (string.IsNullOrEmpty(num) || string.IsNullOrWhiteSpace(num))
+            {
+                return ENotation.Not_Supported;
+            }
+
             // 2진법
             if (num.StartsWith("0b"))
             {
@@ -700,7 +751,22 @@ namespace Assignment1
 
             if (num.StartsWith('-'))
             {
+                if (num.Length == 1 || num == "-0")
+                {
+                    return ENotation.Not_Supported;
+                }
                 num = num.Substring(1);
+            }
+
+            // 10진수, 01123
+            if (num.StartsWith("0"))
+            {
+                if (num.Length == 1)
+                {
+                    return ENotation.Decimal;
+                }
+
+                return ENotation.Not_Supported;
             }
 
             foreach (char c in num)
