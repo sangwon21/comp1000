@@ -294,10 +294,17 @@ namespace Assignment1
             string decimal1 = ToDecimalOrNull(num1);
             string decimal2 = ToDecimalOrNull(num2);
 
+            string binary1 = ToBinaryOrNull(num1);
+            string binary2 = ToBinaryOrNull(num2);
+
+            int maxBitCount = binary1.Length > binary2.Length ? binary1.Length - 2 : binary2.Length - 2;
+            if (maxBitCount > this.bitCount)
+            {
+                return null;
+            }
+
             if (decimal1 == decimal2)
             {
-                string binary1 = ToBinaryOrNull(num1);
-
                 if (binary1.Length - 2 > this.bitCount)
                 {
                     return null;
