@@ -298,6 +298,11 @@ namespace Assignment1
             {
                 string binary1 = ToBinaryOrNull(num1);
 
+                if (binary1.Length - 2 > this.bitCount)
+                {
+                    return null;
+                }
+
                 if (binary1[2] == '1')
                 {
                     bOverflow = true;
