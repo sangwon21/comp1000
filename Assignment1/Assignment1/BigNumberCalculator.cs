@@ -7,12 +7,12 @@ namespace Assignment1
     public class BigNumberCalculator
     {
         private int mBitCount;
-        private EMode mMode;
+        private EMode Mode;
 
         public BigNumberCalculator(int bitCount, EMode mode)
         {
             this.mBitCount = bitCount;
-            this.mMode = mode;
+            this.Mode = mode;
         }
 
         // num의 1의 보수를 2진수 포맷으로 반환합니다.
@@ -260,7 +260,7 @@ namespace Assignment1
                 }
             }
 
-            if (this.mMode == EMode.Binary)
+            if (this.Mode == EMode.Binary)
             {
                 string binaryResult = ToBinaryOrNull(result);
                 int differenceInBitCount = this.mBitCount - (binaryResult.Length - 2);
@@ -323,7 +323,7 @@ namespace Assignment1
                     }
                 }
 
-                if (this.mMode == EMode.Binary)
+                if (this.Mode == EMode.Binary)
                 {
                     StringBuilder binaryZero = new StringBuilder(this.mBitCount + 2);
                     binaryZero.Append("0b");
@@ -348,7 +348,7 @@ namespace Assignment1
             return AddOrNull(decimal1, decimal2, out bOverflow);
         }
 
-        private static ref StringBuilder ReverseStringBuilder(ref StringBuilder stringbuilder)
+        public static ref StringBuilder ReverseStringBuilder(ref StringBuilder stringbuilder)
         {
             int left = 0;
             int right = stringbuilder.Length - 1;
@@ -366,7 +366,7 @@ namespace Assignment1
             return ref stringbuilder;
         }
 
-        private static string FromIntToHex(int num)
+        public static string FromIntToHex(int num)
         {
             if (num < 10)
             {
@@ -376,7 +376,7 @@ namespace Assignment1
             return ((char)((num - 10) + 'A')).ToString();
         }
 
-        private static string FromBinaryToHex(string numInBinary)
+        public static string FromBinaryToHex(string numInBinary)
         {
             int expotential = 4;
 
@@ -422,7 +422,7 @@ namespace Assignment1
             return ReverseStringBuilder(ref outStringBuilder).Insert(0, "0x").ToString();
         }
 
-        private static string FromReversedBinaryInFourLetterToHex(string binary)
+        public static string FromReversedBinaryInFourLetterToHex(string binary)
         {
             int result = 0;
             int accumulatedTwo = 1;
@@ -439,7 +439,7 @@ namespace Assignment1
             return FromIntToChar(result).ToString();
         }
 
-        private static string FromBinaryToDecimal(string binary)
+        public static string FromBinaryToDecimal(string binary)
         {
             string decimalString = "0";
             string twoes = "1";
@@ -469,7 +469,7 @@ namespace Assignment1
             return decimalString;
         }
 
-        private static string GetMaxDecimal(int bitCount)
+        public static string GetMaxDecimal(int bitCount)
         {
             string result = "1";
 
@@ -486,7 +486,7 @@ namespace Assignment1
             return result;
         }
 
-        private static string GetBiggerPositiveDecimalNum(string num1, string num2)
+        public static string GetBiggerPositiveDecimalNum(string num1, string num2)
         {
             if (num1.Length > num2.Length)
             {
@@ -511,7 +511,7 @@ namespace Assignment1
             return num1;
         }
 
-        private static string AddTwoDecimalNumbers(string bigger, string smaller)
+        public static string AddTwoDecimalNumbers(string bigger, string smaller)
         {
             bool bNegative = false;
 
@@ -606,7 +606,7 @@ namespace Assignment1
         }
 
         // 선조건: bigger, smaller 모두 양수
-        private static string SubtractTwoPositiveDecimalNumbers(string bigger, string smaller)
+        public static string SubtractTwoPositiveDecimalNumbers(string bigger, string smaller)
         {
             string result = GetBiggerPositiveDecimalNum(bigger, smaller);
 
@@ -666,7 +666,7 @@ namespace Assignment1
         }
 
         // 0 ~ 9 혹은 A ~ F 까지 숫자만 받는다
-        private static int FromCharToInt(char c)
+        public static int FromCharToInt(char c)
         {
             if ('0' <= c && c <= '9')
             {
@@ -676,7 +676,7 @@ namespace Assignment1
             return c - 'A' + 10;
         }
 
-        private static char FromIntToChar(int digit)
+        public static char FromIntToChar(int digit)
         {
             if (digit >= 10)
             {
@@ -686,7 +686,7 @@ namespace Assignment1
             return (char)((digit + '0'));
         }
 
-        private static string ToStringInBinary(int num)
+        public static string ToStringInBinary(int num)
         {
             if (num < 2)
             {
@@ -698,7 +698,7 @@ namespace Assignment1
             return ToStringInBinary(num / 2) + remainder.ToString();
         }
 
-        private static string ToStringInFourLetterBinary(int num)
+        public static string ToStringInFourLetterBinary(int num)
         {
             string binary = ToStringInBinary(num);
 
@@ -710,7 +710,7 @@ namespace Assignment1
             return binary;
         }
 
-        private static ENotation CheckNotation(string num)
+        public static ENotation CheckNotation(string num)
         {
             if (num == null)
             {
@@ -792,7 +792,7 @@ namespace Assignment1
             return ENotation.Decimal;
         }
 
-        private static string GetQuotientDividedByTwo(string numInDecimal)
+        public static string GetQuotientDividedByTwo(string numInDecimal)
         {
             StringBuilder quotient = new StringBuilder(numInDecimal.Length);
             bool bRemainder = false;
