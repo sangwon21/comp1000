@@ -97,9 +97,7 @@ namespace Lab4
             {
                 if (unionDicitonary.ContainsKey(element))
                 {
-                    int value = unionDicitonary[element];
-                    value += this.dictionary[element];
-                    unionDicitonary[(element)] = value;
+                    unionDicitonary[element] = Math.Max(dictionary[element], otherDictionary[element]);
                     continue;
                 }
                 unionDicitonary[element] = this.dictionary[element];
@@ -116,12 +114,9 @@ namespace Lab4
 
             foreach (string element in otherDictionary.Keys)
             {
-                int otherValue = otherDictionary[element];
                 if (this.dictionary.ContainsKey(element))
                 {
-                    int thisValue = dictionary[element];
-
-                    intersectDicitonary[element] = Math.Min(thisValue, otherValue);
+                    intersectDicitonary[element] = Math.Min(dictionary[element], otherDictionary[element]);
                 }
             }
 
