@@ -152,21 +152,6 @@ namespace Lab4
 
         public List<MultiSet> FindPowerSet()
         {
-            List<string> elements = new List<string>();
-
-            foreach (string element in dictionary.Keys)
-            {
-                int value = dictionary[element];
-
-                while (value > 0)
-                {
-                    elements.Add(element);
-                    value--;
-                }
-            }
-
-            elements.Sort();
-
             List<MultiSet> output = new List<MultiSet>();
 
             /**
@@ -176,7 +161,7 @@ namespace Lab4
             string[] keys = dictionary.Keys.ToArray();
             Array.Sort(keys);
 
-            makePowerSet(ref output, 0, keys.Length, keys, new Dictionary<string, int>());
+            makePowerSet(ref output, 0, keys.Length, keys, new Dictionary<string, int>(), dictionary);
 
             return output;
         }
@@ -199,25 +184,22 @@ namespace Lab4
             return other.IsSubsetOf(this);
         }
 
-        private void makePowerSet(ref List<MultiSet> output, int depth, int maxDepth, string[] keys, Dictionary<string, int> dict)
+        private void makePowerSet(ref List<MultiSet> output, int depth, int maxDepth, string[] keys, Dictionary<string, int> dict, Dictionary<string, int> fromDictionary)
         {
-            if (depth > maxDepth)
+            if (depth >= maxDepth)
             {
-
-                output.Add(new MultiSet(dict));
+                output.Add(new MultiSet(new Dictionary<string, int>(dict)));
                 return;
             }
 
-            for (int i = depth; i < keys.Length; i++)
+            int value = fromDictionary[keys[depth]];
+            for (int i = 0; i <= value; i++)
             {
-                int value = dict[keys[i]];
-
-                for (int j = 0; j <= value; j++)
-                {
-                    dict[keys[i]] = j;
-                    makePowerSet(ref output, i + 1, maxDepth, keys, dict);
-                }
+                dict[keys[depth]] = i;
+                makePowerSet(ref output, depth + 1, maxDepth, keys, dict, fromDictionary);
             }
+
+
         }
     }
 }
