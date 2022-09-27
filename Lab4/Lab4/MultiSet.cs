@@ -6,7 +6,12 @@ namespace Lab4
 {
     public sealed class MultiSet
     {
-        private Dictionary<string, int> dictionary = new Dictionary<string, int>();
+        private Dictionary<string, int> dictionary;
+
+        public MultiSet()
+        {
+            this.dictionary = new Dictionary<string, int>();
+        }
 
         public MultiSet(Dictionary<string, int> dictionary)
         {
@@ -18,7 +23,7 @@ namespace Lab4
             if (dictionary.ContainsKey(element))
             {
                 int value = dictionary[element];
-                dictionary[element] = value++;
+                dictionary[element] = value + 1;
                 return;
             }
 
@@ -39,7 +44,7 @@ namespace Lab4
             else
             {
                 int value = dictionary[element];
-                dictionary[element] = value--;
+                dictionary[element] = value - 1;
             }
 
             return true;
@@ -66,7 +71,10 @@ namespace Lab4
 
             foreach (string element in dictionary.Keys)
             {
-                list.Add(element);
+                for (int i = 0; i < dictionary[element]; i++)
+                {
+                    list.Add(element);
+                }
             }
 
             list.Sort();
@@ -146,17 +154,72 @@ namespace Lab4
 
         public List<MultiSet> FindPowerSet()
         {
-            return null;
+            List<string> elements = new List<string>();
+
+            foreach (string element in dictionary.Keys)
+            {
+                int value = dictionary[element];
+
+                while (value > 0)
+                {
+                    elements.Add(element);
+                    value--;
+                }
+            }
+
+            elements.Sort();
+
+            List<MultiSet> output = new List<MultiSet>();
+
+            /**
+             * 알파벳 기준으로 정렬
+             * 이 순서대로 순회
+             */
+            string[] keys = dictionary.Keys.ToArray();
+            Array.Sort(keys);
+
+            makePowerSet(ref output, 0, keys.Length, keys, new Dictionary<string, int>());
+
+            return output;
         }
 
         public bool IsSubsetOf(MultiSet other)
         {
-            return false;
+            foreach (string element in dictionary.Keys)
+            {
+                if (other.dictionary[element] < dictionary[element])
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
 
         public bool IsSupersetOf(MultiSet other)
         {
-            return false;
+            return other.IsSubsetOf(this);
+        }
+
+        private void makePowerSet(ref List<MultiSet> output, int depth, int maxDepth, string[] keys, Dictionary<string, int> dict)
+        {
+            if (depth > maxDepth)
+            {
+
+                output.Add(new MultiSet(dict));
+                return;
+            }
+
+            for (int i = depth; i < keys.Length; i++)
+            {
+                int value = dict[keys[i]];
+
+                for (int j = 0; j <= value; j++)
+                {
+                    dict[keys[i]] = j;
+                    makePowerSet(ref output, i + 1, maxDepth, keys, dict);
+                }
+            }
         }
     }
 }
