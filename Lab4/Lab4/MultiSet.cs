@@ -103,7 +103,7 @@ namespace Lab4
                 unionDicitonary[element] = this.dictionary[element];
             }
 
-            return otherDictionary.Count() == 0 ? null : new MultiSet(unionDicitonary);
+            return new MultiSet(unionDicitonary);
         }
 
         public MultiSet Intersect(MultiSet other)
@@ -122,7 +122,7 @@ namespace Lab4
 
 
 
-            return otherDictionary.Count() == 0 ? null : new MultiSet(intersectDicitonary);
+            return new MultiSet(intersectDicitonary);
         }
 
         public MultiSet Subtract(MultiSet other)
@@ -133,18 +133,21 @@ namespace Lab4
 
             foreach (string element in dictionary.Keys)
             {
-                int thisValue = dictionary[element];
                 if (otherDictionary.ContainsKey(element))
                 {
-                    int otherValue = otherDictionary[element];
+                    int diff = Math.Max(0, dictionary[element] - otherDictionary[element]);
 
-                    int diff = Math.Max(0, thisValue - otherValue);
+                    if (diff > 0)
+                    {
+                        subtractDicitonary[element] = diff;
+                    }
 
-                    subtractDicitonary[element] = diff;
+                    continue;
                 }
+                subtractDicitonary[element] = dictionary[element];
             }
 
-            return otherDictionary.Count() == 0 ? null : new MultiSet(subtractDicitonary);
+            return new MultiSet(subtractDicitonary);
         }
 
         public List<MultiSet> FindPowerSet()
