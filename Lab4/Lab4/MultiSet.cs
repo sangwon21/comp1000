@@ -7,45 +7,45 @@ namespace Lab4
 {
     public sealed class MultiSet
     {
-        private Dictionary<string, int> dictionary;
+        private Dictionary<string, int> mDictionary;
 
         public MultiSet()
         {
-            this.dictionary = new Dictionary<string, int>();
+            this.mDictionary = new Dictionary<string, int>();
         }
 
         public MultiSet(Dictionary<string, int> dictionary)
         {
-            this.dictionary = dictionary;
+            this.mDictionary = dictionary;
         }
 
         public void Add(string element)
         {
-            if (dictionary.ContainsKey(element))
+            if (mDictionary.ContainsKey(element))
             {
-                int value = dictionary[element];
-                dictionary[element] = value + 1;
+                int value = mDictionary[element];
+                mDictionary[element] = value + 1;
                 return;
             }
 
-            dictionary[element] = 1;
+            mDictionary[element] = 1;
         }
 
         public bool Remove(string element)
         {
-            if (dictionary.ContainsKey(element) == false)
+            if (mDictionary.ContainsKey(element) == false)
             {
                 return false;
             }
 
-            if (dictionary[element] == 1)
+            if (mDictionary[element] == 1)
             {
-                dictionary.Remove(element);
+                mDictionary.Remove(element);
             }
             else
             {
-                int value = dictionary[element];
-                dictionary[element] = value - 1;
+                int value = mDictionary[element];
+                mDictionary[element] = value - 1;
             }
 
             return true;
@@ -53,26 +53,26 @@ namespace Lab4
 
         public uint GetMultiplicity(string element)
         {
-            if (dictionary.ContainsKey(element) == false)
+            if (mDictionary.ContainsKey(element) == false)
             {
                 return 0;
             }
 
-            return (uint)dictionary[element];
+            return (uint)mDictionary[element];
         }
 
         public List<string> ToList()
         {
-            if (dictionary.Count == 0)
+            if (mDictionary.Count == 0)
             {
                 return new List<string>();
             }
 
             List<string> list = new List<string>();
 
-            foreach (string element in dictionary.Keys)
+            foreach (string element in mDictionary.Keys)
             {
-                for (int i = 0; i < dictionary[element]; i++)
+                for (int i = 0; i < mDictionary[element]; i++)
                 {
                     list.Add(element);
                 }
@@ -106,21 +106,21 @@ namespace Lab4
         {
             Dictionary<string, int> unionDicitonary = new Dictionary<string, int>();
 
-            Dictionary<string, int> otherDictionary = other.dictionary;
+            Dictionary<string, int> otherDictionary = other.mDictionary;
 
             foreach (string element in otherDictionary.Keys)
             {
                 unionDicitonary[element] = otherDictionary[element];
             }
 
-            foreach (string element in this.dictionary.Keys)
+            foreach (string element in this.mDictionary.Keys)
             {
                 if (unionDicitonary.ContainsKey(element))
                 {
-                    unionDicitonary[element] = Math.Max(dictionary[element], otherDictionary[element]);
+                    unionDicitonary[element] = Math.Max(mDictionary[element], otherDictionary[element]);
                     continue;
                 }
-                unionDicitonary[element] = this.dictionary[element];
+                unionDicitonary[element] = this.mDictionary[element];
             }
 
             return new MultiSet(unionDicitonary);
@@ -130,13 +130,13 @@ namespace Lab4
         {
             Dictionary<string, int> intersectDicitonary = new Dictionary<string, int>();
 
-            Dictionary<string, int> otherDictionary = other.dictionary;
+            Dictionary<string, int> otherDictionary = other.mDictionary;
 
             foreach (string element in otherDictionary.Keys)
             {
-                if (this.dictionary.ContainsKey(element))
+                if (this.mDictionary.ContainsKey(element))
                 {
-                    intersectDicitonary[element] = Math.Min(dictionary[element], otherDictionary[element]);
+                    intersectDicitonary[element] = Math.Min(mDictionary[element], otherDictionary[element]);
                 }
             }
 
@@ -149,13 +149,13 @@ namespace Lab4
         {
             Dictionary<string, int> subtractDicitonary = new Dictionary<string, int>();
 
-            Dictionary<string, int> otherDictionary = other.dictionary;
+            Dictionary<string, int> otherDictionary = other.mDictionary;
 
-            foreach (string element in dictionary.Keys)
+            foreach (string element in mDictionary.Keys)
             {
                 if (otherDictionary.ContainsKey(element))
                 {
-                    int diff = Math.Max(0, dictionary[element] - otherDictionary[element]);
+                    int diff = Math.Max(0, mDictionary[element] - otherDictionary[element]);
 
                     if (diff > 0)
                     {
@@ -164,7 +164,7 @@ namespace Lab4
 
                     continue;
                 }
-                subtractDicitonary[element] = dictionary[element];
+                subtractDicitonary[element] = mDictionary[element];
             }
 
             return new MultiSet(subtractDicitonary);
@@ -178,10 +178,10 @@ namespace Lab4
              * 알파벳 기준으로 정렬
              * 이 순서대로 순회
              */
-            string[] keys = dictionary.Keys.ToArray();
+            string[] keys = mDictionary.Keys.ToArray();
             Array.Sort(keys);
 
-            makePowerSet(ref output, 0, keys.Length, keys, new Dictionary<string, int>(), dictionary);
+            makePowerSet(ref output, 0, keys.Length, keys, new Dictionary<string, int>(), mDictionary);
 
             output.Sort((a, b) =>
             {
@@ -222,9 +222,9 @@ namespace Lab4
 
         public bool IsSubsetOf(MultiSet other)
         {
-            foreach (string element in dictionary.Keys)
+            foreach (string element in mDictionary.Keys)
             {
-                if (other.dictionary[element] < dictionary[element])
+                if (other.mDictionary[element] < mDictionary[element])
                 {
                     return false;
                 }
