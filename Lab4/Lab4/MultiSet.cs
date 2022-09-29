@@ -64,7 +64,7 @@ namespace Lab4
         {
             if (dictionary.Count == 0)
             {
-                return null;
+                return new List<string>();
             }
 
             List<string> list = new List<string>();
@@ -162,6 +162,40 @@ namespace Lab4
             Array.Sort(keys);
 
             makePowerSet(ref output, 0, keys.Length, keys, new Dictionary<string, int>(), dictionary);
+
+            output.Sort((a, b) =>
+            {
+                List<string> shorter = a.ToList();
+                List<string> longer = b.ToList();
+                bool bChanged = false;
+
+                if (shorter.Count > longer.Count)
+                {
+                    List<string> tmp = shorter;
+                    shorter = longer;
+                    longer = tmp;
+                    bChanged = true;
+                }
+
+                for (int i = 0; i < shorter.Count; i++)
+                {
+                    if (shorter[i] == longer[i])
+                    {
+                        continue;
+                    }
+
+                    int compare = String.Compare(shorter[i], longer[i]);
+
+                    if (bChanged)
+                    {
+                        compare *= -1;
+                    }
+
+                    return compare;
+                }
+
+                return bChanged ? 1 : -1;
+            });
 
             return output;
         }
