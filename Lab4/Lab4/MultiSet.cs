@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
 namespace Lab4
 {
@@ -77,7 +78,26 @@ namespace Lab4
                 }
             }
 
-            list.Sort();
+            list.Sort((a, b) =>
+            {
+                byte[] byteA = Encoding.Default.GetBytes(a);
+                byte[] byteB = Encoding.Default.GetBytes(b);
+
+                for (int i = 0; i < byteA.Length; i++)
+                {
+                    if (byteA[i] > byteB[i])
+                    {
+                        return 1;
+                    }
+
+                    if (byteA[i] < byteB[i])
+                    {
+                        return -1;
+                    }
+                }
+
+                return 0;
+            });
 
             return list;
         }
