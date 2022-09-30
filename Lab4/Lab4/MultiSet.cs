@@ -80,8 +80,8 @@ namespace Lab4
 
             list.Sort((a, b) =>
             {
-                byte[] byteA = Encoding.UTF8.GetBytes(a);
-                byte[] byteB = Encoding.UTF8.GetBytes(b);
+                byte[] byteA = Encoding.UTF32.GetBytes(a);
+                byte[] byteB = Encoding.UTF32.GetBytes(b);
 
                 for (int i = 0; i < byteA.Length; i++)
                 {
