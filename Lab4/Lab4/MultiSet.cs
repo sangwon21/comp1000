@@ -80,17 +80,17 @@ namespace Lab4
 
             list.Sort((a, b) =>
             {
-                byte[] byteA = Encoding.Default.GetBytes(a);
-                byte[] byteB = Encoding.Default.GetBytes(b);
+                byte[] byteA = Encoding.UTF8.GetBytes(a);
+                byte[] byteB = Encoding.UTF8.GetBytes(b);
 
                 for (int i = 0; i < byteA.Length; i++)
                 {
-                    if (byteA[i] > byteB[i])
+                    if ((int)byteA[i] > (int)byteB[i])
                     {
                         return 1;
                     }
 
-                    if (byteA[i] < byteB[i])
+                    if ((int)byteA[i] < (int)byteB[i])
                     {
                         return -1;
                     }
@@ -257,8 +257,6 @@ namespace Lab4
                 dict[keys[depth]] = i;
                 makePowerSet(ref output, depth + 1, maxDepth, keys, dict, fromDictionary);
             }
-
-
         }
     }
 }
