@@ -224,6 +224,11 @@ namespace Lab4
         {
             foreach (string element in mDictionary.Keys)
             {
+                if (other.mDictionary.ContainsKey(element) == false)
+                {
+                    return false;
+                }
+
                 if (other.mDictionary[element] < mDictionary[element])
                 {
                     return false;
