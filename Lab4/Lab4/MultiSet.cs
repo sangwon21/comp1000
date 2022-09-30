@@ -80,23 +80,7 @@ namespace Lab4
 
             list.Sort((a, b) =>
             {
-                byte[] byteA = Encoding.UTF32.GetBytes(a);
-                byte[] byteB = Encoding.UTF32.GetBytes(b);
-
-                for (int i = 0; i < byteA.Length; i++)
-                {
-                    if ((int)byteA[i] > (int)byteB[i])
-                    {
-                        return 1;
-                    }
-
-                    if ((int)byteA[i] < (int)byteB[i])
-                    {
-                        return -1;
-                    }
-                }
-
-                return 0;
+                return String.CompareOrdinal(a, b);
             });
 
             return list;
@@ -204,7 +188,7 @@ namespace Lab4
                         continue;
                     }
 
-                    int compare = String.Compare(shorter[i], longer[i]);
+                    int compare = String.CompareOrdinal(shorter[i], longer[i]);
 
                     if (bChanged)
                     {
