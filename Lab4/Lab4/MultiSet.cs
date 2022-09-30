@@ -198,6 +198,11 @@ namespace Lab4
                     return compare;
                 }
 
+                if (shorter.Count == longer.Count)
+                {
+                    return 0;
+                }
+
                 return bChanged ? 1 : -1;
             });
 
