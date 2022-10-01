@@ -3,9 +3,13 @@
     "Major": 1,
     "Minor": 0
   },
+  "PanCoords": {
+    "X": 241.33322,
+    "Y": 104.00009
+  },
   "InputCoords": {
-    "X": 90.0,
-    "Y": 26.0
+    "X": -144.66667,
+    "Y": 83.99997
   },
   "Inputs": [
     {
@@ -21,34 +25,38 @@
     {
       "Order": 2,
       "ID": "18c050d0-402c-43c8-92e8-4782d93fde00",
-      "Value": false
+      "Value": true
     },
     {
       "Order": 3,
-      "ID": "4e9cb720-29a0-4aca-b550-f84313960a6a",
-      "Value": false
+      "ID": "e8e6d984-7799-48d2-9ea2-eed3a97c9597",
+      "Value": true
     }
   ],
   "OutputCoords": {
-    "X": 910.0,
-    "Y": 26.0
+    "X": 1408.6666,
+    "Y": -11.3333435
   },
   "Outputs": [
     {
       "Order": 0,
-      "ID": "036f9580-d64e-41c7-97b8-636358eb2656"
+      "ID": "036f9580-d64e-41c7-97b8-636358eb2656",
+      "InputSource": "7dc07e50-826f-426d-8060-ad83fcc4f7ea"
     },
     {
       "Order": 1,
-      "ID": "d477c000-022b-4cc2-9449-07657d2c825f"
+      "ID": "d477c000-022b-4cc2-9449-07657d2c825f",
+      "InputSource": "cb0daf71-eb9b-4784-927c-7b6b34c5af92"
     },
     {
       "Order": 2,
-      "ID": "bae328f0-11c3-42c1-bead-35abe5a34dd9"
+      "ID": "bae328f0-11c3-42c1-bead-35abe5a34dd9",
+      "InputSource": "e76df8e9-8a8d-45a8-9a40-798505b85f4d"
     },
     {
       "Order": 3,
-      "ID": "db29ca00-4ffc-40cd-a99b-a99c976a9b21"
+      "ID": "db29ca00-4ffc-40cd-a99b-a99c976a9b21",
+      "InputSource": "66ea5423-ce81-435c-9f17-92e0675dd01b"
     },
     {
       "Order": 4,
@@ -56,9 +64,121 @@
     },
     {
       "Order": 5,
-      "ID": "17bf0d10-625f-44c4-a5d5-2492240f6dcb"
+      "ID": "17bf0d10-625f-44c4-a5d5-2492240f6dcb",
+      "InputSource": "8f8a7426-5071-41fb-9d1f-b0d95444f6b8"
     }
   ],
-  "Gates": [],
+  "Gates": [
+    {
+      "ID": "df0e13d0-727d-440d-a595-b66ca2f3061a",
+      "Inputs": [
+        "18c050d0-402c-43c8-92e8-4782d93fde00",
+        "e8e6d984-7799-48d2-9ea2-eed3a97c9597"
+      ],
+      "X": 411.33347,
+      "Y": 321.99997,
+      "Type": "AND"
+    },
+    {
+      "ID": "7dc07e50-826f-426d-8060-ad83fcc4f7ea",
+      "Inputs": [
+        "e8e6d984-7799-48d2-9ea2-eed3a97c9597",
+        null
+      ],
+      "X": 450.66666,
+      "Y": 644.6666,
+      "Type": "NOT"
+    },
+    {
+      "ID": "82fa51ed-a38b-4a52-9eab-b3feb6ac623f",
+      "Inputs": [
+        "7720a0f0-eb81-42c0-b000-60acb4ae502b",
+        "854adb20-eb58-49c7-9fec-cd29bcf60b5d"
+      ],
+      "X": 416.00003,
+      "Y": 218.66656,
+      "Type": "AND"
+    },
+    {
+      "ID": "4ebf44ed-9671-4874-9a40-4849607dc1a2",
+      "Inputs": [
+        "18c050d0-402c-43c8-92e8-4782d93fde00",
+        "e8e6d984-7799-48d2-9ea2-eed3a97c9597"
+      ],
+      "X": 412.00003,
+      "Y": 144.66663,
+      "Type": "NOR"
+    },
+    {
+      "ID": "e76df8e9-8a8d-45a8-9a40-798505b85f4d",
+      "Inputs": [
+        "82fa51ed-a38b-4a52-9eab-b3feb6ac623f",
+        "df0e13d0-727d-440d-a595-b66ca2f3061a"
+      ],
+      "X": 599.3335,
+      "Y": 197.33325,
+      "Type": "AND"
+    },
+    {
+      "ID": "8cef2a34-4257-499e-ad67-decb9b85d156",
+      "Inputs": [
+        "18c050d0-402c-43c8-92e8-4782d93fde00",
+        "e8e6d984-7799-48d2-9ea2-eed3a97c9597"
+      ],
+      "X": 18.333557,
+      "Y": 662.33325,
+      "Type": "AND"
+    },
+    {
+      "ID": "0f5ba8f9-f3a3-42fa-a37f-d301c8ed0911",
+      "Inputs": [
+        "7720a0f0-eb81-42c0-b000-60acb4ae502b",
+        "854adb20-eb58-49c7-9fec-cd29bcf60b5d"
+      ],
+      "X": 409.33334,
+      "Y": 37.333298,
+      "Type": "NOR"
+    },
+    {
+      "ID": "cb0daf71-eb9b-4784-927c-7b6b34c5af92",
+      "Inputs": [
+        "0f5ba8f9-f3a3-42fa-a37f-d301c8ed0911",
+        "4ebf44ed-9671-4874-9a40-4849607dc1a2"
+      ],
+      "X": 594.0,
+      "Y": 63.99991,
+      "Type": "AND"
+    },
+    {
+      "ID": "281519fb-664e-46b6-9ba1-a8585192a212",
+      "Inputs": [
+        "18c050d0-402c-43c8-92e8-4782d93fde00",
+        "e8e6d984-7799-48d2-9ea2-eed3a97c9597"
+      ],
+      "X": 22.333527,
+      "Y": 568.33325,
+      "Type": "XOR"
+    },
+    {
+      "ID": "8f8a7426-5071-41fb-9d1f-b0d95444f6b8",
+      "Inputs": [
+        "18c050d0-402c-43c8-92e8-4782d93fde00",
+        "e8e6d984-7799-48d2-9ea2-eed3a97c9597"
+      ],
+      "X": 569.6669,
+      "Y": 506.99985,
+      "Type": "OR"
+    },
+    {
+      "ID": "66ea5423-ce81-435c-9f17-92e0675dd01b",
+      "Inputs": [
+        "cb0daf71-eb9b-4784-927c-7b6b34c5af92",
+        "e76df8e9-8a8d-45a8-9a40-798505b85f4d"
+      ],
+      "X": 937.0001,
+      "Y": 239.6666,
+      "Type": "OR"
+    }
+  ],
   "AllowedGateTypes": []
 }
