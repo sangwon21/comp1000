@@ -80,23 +80,7 @@ namespace Lab4
 
             list.Sort((a, b) =>
             {
-                byte[] byteA = Encoding.Default.GetBytes(a);
-                byte[] byteB = Encoding.Default.GetBytes(b);
-
-                for (int i = 0; i < byteA.Length; i++)
-                {
-                    if (byteA[i] > byteB[i])
-                    {
-                        return 1;
-                    }
-
-                    if (byteA[i] < byteB[i])
-                    {
-                        return -1;
-                    }
-                }
-
-                return 0;
+                return String.CompareOrdinal(a, b);
             });
 
             return list;
@@ -204,7 +188,7 @@ namespace Lab4
                         continue;
                     }
 
-                    int compare = String.Compare(shorter[i], longer[i]);
+                    int compare = String.CompareOrdinal(shorter[i], longer[i]);
 
                     if (bChanged)
                     {
@@ -212,6 +196,11 @@ namespace Lab4
                     }
 
                     return compare;
+                }
+
+                if (shorter.Count == longer.Count)
+                {
+                    return 0;
                 }
 
                 return bChanged ? 1 : -1;
@@ -224,6 +213,11 @@ namespace Lab4
         {
             foreach (string element in mDictionary.Keys)
             {
+                if (other.mDictionary.ContainsKey(element) == false)
+                {
+                    return false;
+                }
+
                 if (other.mDictionary[element] < mDictionary[element])
                 {
                     return false;
@@ -252,8 +246,6 @@ namespace Lab4
                 dict[keys[depth]] = i;
                 makePowerSet(ref output, depth + 1, maxDepth, keys, dict, fromDictionary);
             }
-
-
         }
     }
 }
