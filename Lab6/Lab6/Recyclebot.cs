@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace Lab6
 {
@@ -59,6 +58,7 @@ namespace Lab6
                             outItems.Add(item);
                             continue;
                         }
+                        continue;
                     }
 
                     outItems.Add(item);
