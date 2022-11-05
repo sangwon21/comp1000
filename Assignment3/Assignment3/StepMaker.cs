@@ -10,10 +10,10 @@ namespace Assignment3
         private const int BETWEEN_LENGTH = 6;
         public static List<int> MakeSteps(int[] steps, INoise noise)
         {
-            return MakeStepsHelper(steps, noise, 0);
+            return makeStepsHelper(steps, noise, 0);
         }
 
-        private static int GetDivergentStepIndex(int[] steps)
+        private static int getDivergentStepIndex(int[] steps)
         {
             for (int i = 0; i < steps.Length - 1; ++i)
             {
@@ -26,9 +26,9 @@ namespace Assignment3
             return -1;
         }
 
-        private static List<int> MakeStepsHelper(int[] steps, INoise noise, int currentRecursiveLevel)
+        private static List<int> makeStepsHelper(int[] steps, INoise noise, int currentRecursiveLevel)
         {
-            if (GetDivergentStepIndex(steps) == INVALID_INDEX)
+            if (getDivergentStepIndex(steps) == INVALID_INDEX)
             {
                 return new List<int>(steps);
             }
@@ -53,10 +53,10 @@ namespace Assignment3
 
                     for (int j = 1; j < BETWEEN_LENGTH - 1; ++j)
                     {
-                        between[j] = GetLinearInterpolatedValue(left, right, j, BETWEEN_LENGTH - 1 - j) + noise.GetNext(currentRecursiveLevel);
+                        between[j] = getLinearInterpolatedValue(left, right, j, BETWEEN_LENGTH - 1 - j) + noise.GetNext(currentRecursiveLevel);
                     }
 
-                    List<int> splitted = MakeStepsHelper(between, noise, currentRecursiveLevel + 1);
+                    List<int> splitted = makeStepsHelper(between, noise, currentRecursiveLevel + 1);
 
                     /**
                      * left는 밖의 for문에서, right는 다음 번 밖의 for문에서 포함된다
@@ -75,7 +75,7 @@ namespace Assignment3
             return outStepList;
         }
 
-        private static int GetLinearInterpolatedValue(int left, int right, int leftWeight, int rightWeight)
+        private static int getLinearInterpolatedValue(int left, int right, int leftWeight, int rightWeight)
         {
             return (leftWeight * right + rightWeight * left) / (leftWeight + rightWeight); ;
         }
