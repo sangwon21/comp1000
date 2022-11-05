@@ -80,6 +80,4 @@ namespace Assignment3
             return (leftWeight * right + rightWeight * left) / (leftWeight + rightWeight); ;
         }
     }
-
-
 }
