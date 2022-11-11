@@ -46,7 +46,7 @@
 
         public static int[] GetRowOrNull(int[,] matrix, int row)
         {
-            if (matrix.GetLength(0) < row || row < 0)
+            if (matrix.GetLength(0) <= row || row < 0)
             {
                 return null;
             }
@@ -63,7 +63,7 @@
 
         public static int[] GetColumnOrNull(int[,] matrix, int col)
         {
-            if (matrix.GetLength(1) < col || col < 0)
+            if (matrix.GetLength(1) <= col || col < 0)
             {
                 return null;
             }
