@@ -43,6 +43,23 @@
 
             return outMatrix;
         }
+
+        public static int[] GetRowOrNull(int[,] matrix, int row)
+        {
+            if (matrix.GetLength(0) > row || row < 0)
+            {
+                return null;
+            }
+
+            int[] outRow = new int[matrix.GetLength(1)];
+
+            for (int i = 0; i < matrix.GetLength(1); ++i)
+            {
+                outRow[i] = matrix[row, i];
+            }
+
+            return outRow;
+        }
     }
 }
 
