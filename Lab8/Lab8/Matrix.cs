@@ -28,6 +28,21 @@
 
             return outMatrix;
         }
+
+        public static int[,] GetIdentityMatrix(int size)
+        {
+            int[,] outMatrix = new int[size, size];
+
+            for (int i = 0; i < size; ++i)
+            {
+                for (int j = 0; j < size; ++j)
+                {
+                    outMatrix[i, j] = i == j ? 1 : 0;
+                }
+            }
+
+            return outMatrix;
+        }
     }
 }
 
