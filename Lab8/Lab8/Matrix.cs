@@ -99,6 +99,28 @@
 
             return outVector;
         }
+
+        public static int[] MultiplyVectorMatrixOrNull(int[] vector, int[,] matrix)
+        {
+            if (vector.Length != matrix.GetLength(0))
+            {
+                return null;
+            }
+
+            int[] outVector = new int[matrix.GetLength(1)];
+
+            for (int i = 0; i < matrix.GetLength(1); ++i)
+            {
+                int sum = 0;
+                for (int j = 0; j < matrix.GetLength(0); ++j)
+                {
+                    sum += matrix[i, j] * vector[j];
+                }
+                outVector[i] = sum;
+            }
+
+            return outVector;
+        }
     }
 }
 
