@@ -60,6 +60,23 @@
 
             return outRow;
         }
+
+        public static int[] GetColumnOrNull(int[,] matrix, int col)
+        {
+            if (matrix.GetLength(1) > col || col < 0)
+            {
+                return null;
+            }
+
+            int[] outCol = new int[matrix.GetLength(0)];
+
+            for (int i = 0; i < matrix.GetLength(0); ++i)
+            {
+                outCol[i] = matrix[i, col];
+            }
+
+            return outCol;
+        }
     }
 }
 
