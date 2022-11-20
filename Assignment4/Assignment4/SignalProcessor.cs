@@ -37,9 +37,28 @@ namespace Assignment4
             return outArray;
         }
 
+        // f: signal, g: filter
         public static double[] Convolve1D(double[] signal, double[] filter)
         {
-            return null;
+            double[] outArray = new double[signal.Length];
+
+            for (int i = 0; i < signal.Length; ++i)
+            {
+                for (int j = 0; j < filter.Length; ++j)
+                {
+                    int toMultiplySignalIndex = i - j + filter.Length / 2;
+
+                    if (toMultiplySignalIndex < 0 || toMultiplySignalIndex >= filter.Length)
+                    {
+                        continue;
+                    }
+
+                    // reverse한 배열을 곱해야 한다!
+                    outArray[i] += filter[filter.Length - j] * signal[toMultiplySignalIndex];
+                }
+            }
+
+            return outArray;
         }
 
         public static double[,] GetGaussianFilter2D(double sigma)
