@@ -100,7 +100,49 @@ namespace Assignment4
 
         public static Bitmap ConvolveImage(Bitmap bitmap, double[,] filter)
         {
-            return null;
+            int width = bitmap.Width;
+            int height = bitmap.Height;
+
+            Bitmap outBitmap = new Bitmap(width, height);
+
+            for (int i = 0; i < width; ++i)
+            {
+                for (int j = 0; j < height; ++j)
+                {
+                    double r = 0;
+                    double g = 0;
+                    double b = 0;
+
+                    for (int x = 0; x < filter.GetLength(0); ++x)
+                    {
+                        for (int y = 0; y < filter.GetLength(1); ++y)
+                        {
+                            int toMultiplySignalIndexX = i - y + filter.GetLength(1) / 2;
+                            int toMultiplySignalIndexY = j - x + filter.GetLength(0) / 2; 
+
+                            if (isValid(toMultiplySignalIndexX, toMultiplySignalIndexY, width, height) == false)
+                            {
+                                continue;
+                            }
+
+                            int filterIndexX = x;
+                            int filterIndexY = y;
+                            Color targetColor = bitmap.GetPixel(toMultiplySignalIndexX, toMultiplySignalIndexY);
+
+                            r += targetColor.R * filter[filterIndexX, filterIndexY];
+                            g += targetColor.G * filter[filterIndexX, filterIndexY];
+                            b += targetColor.B * filter[filterIndexX, filterIndexY];
+                        }
+                    }
+                    outBitmap.SetPixel(i, j, new Color( (byte)r, (byte)g, (byte)b));
+                }
+            }
+            return outBitmap;
+        }
+
+        private static bool isValid(int targetWidth, int targetHeight, int width, int height)
+        {
+            return 0 <= targetWidth && targetWidth < width && 0 <= targetHeight && targetHeight < height;
         }
     }
 }
