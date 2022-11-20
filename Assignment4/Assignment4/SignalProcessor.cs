@@ -58,13 +58,15 @@ namespace Assignment4
                 {
                     int toMultiplySignalIndex = i - j + filter.Length / 2;
 
-                    if (toMultiplySignalIndex < 0 || toMultiplySignalIndex >= filter.Length)
+                    if (toMultiplySignalIndex < 0 || toMultiplySignalIndex >= signal.Length)
                     {
                         continue;
                     }
 
+                    int filterIndex = filter.Length - 1 - j;
+
                     // reverse한 배열을 곱해야 한다!
-                    outArray[i] += filter[filter.Length - j] * signal[toMultiplySignalIndex];
+                    outArray[i] += filter[filterIndex] * signal[toMultiplySignalIndex];
                 }
             }
 
