@@ -100,7 +100,53 @@ namespace Assignment4
 
         public static Bitmap ConvolveImage(Bitmap bitmap, double[,] filter)
         {
-            return null;
+            int width = bitmap.Width;
+            int height = bitmap.Height;
+
+            Bitmap outBitmap = new Bitmap(width, height);
+
+            int middleForWidth = width / 2;
+            int middleForHeight = height / 2;
+
+
+            for (int i = 0; i < width; ++i)
+            {
+                for (int j = 0; j < height; ++j)
+                {
+                    byte r = 0;
+                    byte g = 0;
+                    byte b = 0;
+
+                    for (int x = 0; x < filter.GetLength(0); ++x)
+                    {
+                        for (int y = 0; y < filter.GetLength(1); ++y)
+                        {
+                            int toMultiplySignalIndexX = i - x + filter.GetLength(0) / 2;
+                            int toMultiplySignalIndexY = j - y + filter.GetLength(1) / 2;
+
+                            if (isValid(toMultiplySignalIndexX, toMultiplySignalIndexY, width, height) == false)
+                            {
+                                continue;
+                            }
+
+                            int filterIndexX = filter.GetLength(0) - 1 - x;
+                            int filterIndexY = filter.GetLength(1) - 1 - y;
+                            Color targetColor = bitmap.GetPixel(toMultiplySignalIndexX, toMultiplySignalIndexY);
+
+                            r += (byte)Math.Floor(targetColor.R * filter[filterIndexX, filterIndexY]);
+                            g += (byte)Math.Floor(targetColor.G * filter[filterIndexX, filterIndexY]);
+                            b += (byte)Math.Floor(targetColor.B * filter[filterIndexX, filterIndexY]);
+                        }
+                    }
+                    outBitmap.SetPixel(i, j, new Color(r, g, b));
+                }
+            }
+            return outBitmap;
+        }
+
+        private static bool isValid(int targetWidth, int targetHeight, int width, int height)
+        {
+            return 0 <= targetWidth && targetWidth <= width && 0 <= targetHeight && targetHeight <= height;
         }
     }
 }
