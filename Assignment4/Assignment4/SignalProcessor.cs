@@ -6,13 +6,23 @@ namespace Assignment4
 {
     public static class SignalProcessor
     {
-        private static double getGaussianFunction(double sigma, int x)
+        private static double getGaussianFunctionFor1D(double sigma, int x)
         {
             const double e = Math.E;
             double sigmaSquare = Math.Pow(sigma, 2);
             double xSquare = Math.Pow(x, 2);
 
             return Math.Pow(e, -xSquare / (2 * sigmaSquare)) * (1 / (sigma * Math.Sqrt(2 * Math.PI)));
+        }
+
+        private static double getGaussianFunctionFor2D(double sigma, int y, int x)
+        {
+            const double e = Math.E;
+            double sigmaSquare = Math.Pow(sigma, 2);
+            double xSquare = Math.Pow(x, 2);
+            double ySquare = Math.Pow(y, 2);
+
+            return Math.Pow(e, -(xSquare + ySquare) / (2 * sigmaSquare)) * (1 / (2 * sigmaSquare * Math.PI));
         }
 
         public static double[] GetGaussianFilter1D(double sigma)
@@ -31,7 +41,7 @@ namespace Assignment4
 
             for (int i = 0; i < length; ++i)
             {
-                outArray[i] = getGaussianFunction(sigma, i - middleIndex);
+                outArray[i] = getGaussianFunctionFor1D(sigma, i - middleIndex);
             }
 
             return outArray;
@@ -63,7 +73,27 @@ namespace Assignment4
 
         public static double[,] GetGaussianFilter2D(double sigma)
         {
-            return null;
+            // length가 0이 되면 안 된다
+            int length = (int)Math.Floor(sigma * 6);
+            Debug.Assert(length > 0);
+
+            if (length % 2 == 0)
+            {
+                ++length;
+            }
+
+            double[,] outArray = new double[length, length];
+            int middleIndex = length / 2;
+
+            for (int i = 0; i < length; ++i)
+            {
+                for (int j = 0; j < length; ++j)
+                {
+                    outArray[i, j] = getGaussianFunctionFor2D(sigma, j - middleIndex, i - middleIndex);
+                }
+            }
+
+            return outArray;
         }
 
         public static Bitmap ConvolveImage(Bitmap bitmap, double[,] filter)
