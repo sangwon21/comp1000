@@ -28,7 +28,7 @@ namespace Assignment4
         public static double[] GetGaussianFilter1D(double sigma)
         {
             // length가 0이 되면 안 된다
-            int length = (int)Math.Floor(sigma * 6);
+            int length = (int)Math.Ceiling(sigma * 6);
             Debug.Assert(length > 0);
 
             if (length % 2 == 0)
@@ -76,7 +76,7 @@ namespace Assignment4
         public static double[,] GetGaussianFilter2D(double sigma)
         {
             // length가 0이 되면 안 된다
-            int length = (int)Math.Floor(sigma * 6);
+            int length = (int)Math.Ceiling(sigma * 6);
             Debug.Assert(length > 0);
 
             if (length % 2 == 0)
@@ -105,40 +105,36 @@ namespace Assignment4
 
             Bitmap outBitmap = new Bitmap(width, height);
 
-            int middleForWidth = width / 2;
-            int middleForHeight = height / 2;
-
-
             for (int i = 0; i < width; ++i)
             {
                 for (int j = 0; j < height; ++j)
                 {
-                    byte r = 0;
-                    byte g = 0;
-                    byte b = 0;
+                    double r = 0;
+                    double g = 0;
+                    double b = 0;
 
                     for (int x = 0; x < filter.GetLength(0); ++x)
                     {
                         for (int y = 0; y < filter.GetLength(1); ++y)
                         {
-                            int toMultiplySignalIndexX = i - x + filter.GetLength(0) / 2;
-                            int toMultiplySignalIndexY = j - y + filter.GetLength(1) / 2;
+                            int toMultiplySignalIndexX = i - y + filter.GetLength(1) / 2;
+                            int toMultiplySignalIndexY = j - x + filter.GetLength(0) / 2;
 
                             if (isValid(toMultiplySignalIndexX, toMultiplySignalIndexY, width, height) == false)
                             {
                                 continue;
                             }
 
-                            int filterIndexX = filter.GetLength(0) - 1 - x;
-                            int filterIndexY = filter.GetLength(1) - 1 - y;
+                            int filterIndexX = x;
+                            int filterIndexY = y;
                             Color targetColor = bitmap.GetPixel(toMultiplySignalIndexX, toMultiplySignalIndexY);
 
-                            r += (byte)Math.Floor(targetColor.R * filter[filterIndexX, filterIndexY]);
-                            g += (byte)Math.Floor(targetColor.G * filter[filterIndexX, filterIndexY]);
-                            b += (byte)Math.Floor(targetColor.B * filter[filterIndexX, filterIndexY]);
+                            r += targetColor.R * filter[filterIndexX, filterIndexY];
+                            g += targetColor.G * filter[filterIndexX, filterIndexY];
+                            b += targetColor.B * filter[filterIndexX, filterIndexY];
                         }
                     }
-                    outBitmap.SetPixel(i, j, new Color(r, g, b));
+                    outBitmap.SetPixel(i, j, new Color((byte)r, (byte)g, (byte)b));
                 }
             }
             return outBitmap;
@@ -146,7 +142,7 @@ namespace Assignment4
 
         private static bool isValid(int targetWidth, int targetHeight, int width, int height)
         {
-            return 0 <= targetWidth && targetWidth <= width && 0 <= targetHeight && targetHeight <= height;
+            return 0 <= targetWidth && targetWidth < width && 0 <= targetHeight && targetHeight < height;
         }
     }
 }
