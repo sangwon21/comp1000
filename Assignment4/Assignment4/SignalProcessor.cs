@@ -134,13 +134,13 @@ namespace Assignment4
                             b += targetColor.B * filter[filterIndexX, filterIndexY];
                         }
                     }
-                    outBitmap.SetPixel(i, j, new Color(asByteInColor(r), asByteInColor(g), asByteInColor(b)));
+                    outBitmap.SetPixel(i, j, new Color(toByteInColor(r), toByteInColor(g), toByteInColor(b)));
                 }
             }
             return outBitmap;
         }
 
-        private static byte asByteInColor(double num)
+        private static byte toByteInColor(double num)
         {
             return (byte)Math.Clamp(num, 0, 255);
         }
