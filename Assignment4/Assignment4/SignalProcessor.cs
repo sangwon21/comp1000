@@ -8,21 +8,21 @@ namespace Assignment4
     {
         private static double getGaussianFunctionFor1D(double sigma, int x)
         {
-            const double e = Math.E;
+            const double E = Math.E;
             double sigmaSquare = Math.Pow(sigma, 2);
             double xSquare = Math.Pow(x, 2);
 
-            return Math.Pow(e, -xSquare / (2 * sigmaSquare)) * (1 / (sigma * Math.Sqrt(2 * Math.PI)));
+            return Math.Pow(E, -xSquare / (2 * sigmaSquare)) * (1 / (sigma * Math.Sqrt(2 * Math.PI)));
         }
 
         private static double getGaussianFunctionFor2D(double sigma, int y, int x)
         {
-            const double e = Math.E;
+            const double E = Math.E;
             double sigmaSquare = Math.Pow(sigma, 2);
             double xSquare = Math.Pow(x, 2);
             double ySquare = Math.Pow(y, 2);
 
-            return Math.Pow(e, -(xSquare + ySquare) / (2 * sigmaSquare)) * (1 / (2 * sigmaSquare * Math.PI));
+            return Math.Pow(E, -(xSquare + ySquare) / (2 * sigmaSquare)) * (1 / (2 * sigmaSquare * Math.PI));
         }
 
         public static double[] GetGaussianFilter1D(double sigma)
