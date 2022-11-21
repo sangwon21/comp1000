@@ -63,7 +63,7 @@ namespace Assignment4
                         continue;
                     }
 
-                    int filterIndex = filter.Length - 1 - j;
+                    int filterIndex = j;
 
                     // reverse한 배열을 곱해야 한다!
                     outArray[i] += filter[filterIndex] * signal[toMultiplySignalIndex];

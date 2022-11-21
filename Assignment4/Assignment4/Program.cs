@@ -12,7 +12,7 @@ namespace Assignment4
             const int ONED_SIGNAL_SIZE = 100;
             const int NOISE_POINTS_COUNT = 50;
             const string IMAGE_FILE_NAME = "earth.bmp";
-
+            Console.WriteLine(3 / 2);
             var test = SignalProcessor.GetGaussianFilter1D(0.5);
 
             #region 1D_GAUSSIAN_FILTER 
@@ -67,6 +67,16 @@ namespace Assignment4
                 -1.34806687930198, 4.99186890967147, 5.43803240336943, 0.616441108343297, -5.10700127862168, -7.41162140513133, -3.84862582941917, 4.3651987600132,
                 8.51112885332533, 3.0204321094573, -4.78816515137937, -6.299528630311
             }, result1D, 0.00001);
+            #endregion
+
+            #region CONVOLVE_1D_2
+            double[] signal2 = new double[] { 10, 50, 60, 10, 20, 40, 30 };
+            filter1D = new double[] { 1, 0, 0 };
+
+            double[] result1D2 = SignalProcessor.Convolve1D(signal2, filter1D);
+
+            printArray(result1D2);
+
             #endregion
 
             #region 2D_GAUSSIAN_FILTER
