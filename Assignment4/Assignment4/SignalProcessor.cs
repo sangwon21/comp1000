@@ -134,7 +134,7 @@ namespace Assignment4
                             b += targetColor.B * filter[filterIndexX, filterIndexY];
                         }
                     }
-                    outBitmap.SetPixel(i, j, new Color(asByteInColor(r), asByteInColor(g), asByteInColor(b));
+                    outBitmap.SetPixel(i, j, new Color(asByteInColor(r), asByteInColor(g), asByteInColor(b)));
                 }
             }
             return outBitmap;
