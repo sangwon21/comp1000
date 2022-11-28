@@ -106,6 +106,58 @@ namespace Lab11
             Debug.Assert(frequencyTable[4].Item1.Item1 == 41);
             Debug.Assert(frequencyTable[4].Item1.Item2 == 51);
             Debug.Assert(frequencyTable[4].Item2 == 4);
+
+            data = new int[] { 33, 43, 36, 35, 39, 38, 43, 34, 43, 39, 34, 43, 37, 33, 33, 38, 34, 43, 34, 41 };
+            frequencyTable = FrequencyTable.GetFrequencyTable(data, 11);
+
+            Debug.Assert(getTotalCount(frequencyTable) == data.Length);
+            Debug.Assert(frequencyTable.Count == 11);
+
+            Debug.Assert(frequencyTable[0].Item1.Item1 == 33);
+            Debug.Assert(frequencyTable[0].Item1.Item2 == 34);
+            Debug.Assert(frequencyTable[0].Item2 == 3);
+
+            Debug.Assert(frequencyTable[1].Item1.Item1 == 34);
+            Debug.Assert(frequencyTable[1].Item1.Item2 == 35);
+            Debug.Assert(frequencyTable[1].Item2 == 4);
+
+            Debug.Assert(frequencyTable[2].Item1.Item1 == 35);
+            Debug.Assert(frequencyTable[2].Item1.Item2 == 36);
+            Debug.Assert(frequencyTable[2].Item2 == 1);
+
+            Debug.Assert(frequencyTable[3].Item1.Item1 == 36);
+            Debug.Assert(frequencyTable[3].Item1.Item2 == 37);
+            Debug.Assert(frequencyTable[3].Item2 == 1);
+
+            Debug.Assert(frequencyTable[4].Item1.Item1 == 37);
+            Debug.Assert(frequencyTable[4].Item1.Item2 == 38);
+            Debug.Assert(frequencyTable[4].Item2 == 1);
+
+            Debug.Assert(frequencyTable[5].Item1.Item1 == 38);
+            Debug.Assert(frequencyTable[5].Item1.Item2 == 39);
+            Debug.Assert(frequencyTable[5].Item2 == 2);
+
+            Debug.Assert(frequencyTable[6].Item1.Item1 == 39);
+            Debug.Assert(frequencyTable[6].Item1.Item2 == 40);
+            Debug.Assert(frequencyTable[6].Item2 == 2);
+
+            Debug.Assert(frequencyTable[7].Item1.Item1 == 40);
+            Debug.Assert(frequencyTable[7].Item1.Item2 == 41);
+            Debug.Assert(frequencyTable[7].Item2 == 0);
+
+            Debug.Assert(frequencyTable[8].Item1.Item1 == 41);
+            Debug.Assert(frequencyTable[8].Item1.Item2 == 42);
+            Debug.Assert(frequencyTable[8].Item2 == 1);
+
+            Debug.Assert(frequencyTable[9].Item1.Item1 == 42);
+            Debug.Assert(frequencyTable[9].Item1.Item2 == 43);
+            Debug.Assert(frequencyTable[9].Item2 == 0);
+
+            Debug.Assert(frequencyTable[10].Item1.Item1 == 43);
+            Debug.Assert(frequencyTable[10].Item1.Item2 == 44);
+            Debug.Assert(frequencyTable[10].Item2 == 5);
+
+
         }
 
         private static int getTotalCount(List<Tuple<Tuple<int, int>, int>> frequencyTable)

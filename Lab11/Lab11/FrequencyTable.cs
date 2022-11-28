@@ -17,14 +17,14 @@ namespace Lab11
             }
 
             int diff = maxValue - minValue;
-            int minInterval = diff / maxBinCount;
+            int minInterval = Math.Max(1, diff / maxBinCount);
 
-            if (minInterval < 0)
+            if (diff < 0)
             {
                 return null;
             }
 
-            if (minInterval == 0)
+            if (diff == 0)
             {
                 List<Tuple<Tuple<int, int>, int>> outList = new List<Tuple<Tuple<int, int>, int>>(1);
 
@@ -49,14 +49,14 @@ namespace Lab11
 
         private static List<Tuple<Tuple<int, int>, int>> tryPutDataIntoHistogram(int[] data, int start, int end, int interval, int maxBinCount)
         {
-            List<Tuple<Tuple<int, int>, int>> list = new List<Tuple<Tuple<int, int>, int>>(maxBinCount);
+            int outListCount = Math.Min((end - start) / interval + 1, maxBinCount);
 
-            bool isValid = true;
+            List<Tuple<Tuple<int, int>, int>> outList = new List<Tuple<Tuple<int, int>, int>>(outListCount);
 
-            for (int i = start; i < end; i += interval)
+            for (int i = 0; i < outListCount; ++i)
             {
-                Tuple<int, int> period = new Tuple<int, int>(i, i + interval);
-                list.Add(new Tuple<Tuple<int, int>, int>(period, 0));
+                Tuple<int, int> period = new Tuple<int, int>(start + i * interval, start + (i + 1) * interval);
+                outList.Add(new Tuple<Tuple<int, int>, int>(period, 0));
             }
 
             foreach (int datum in data)
@@ -65,22 +65,16 @@ namespace Lab11
 
                 if (index >= maxBinCount)
                 {
-                    isValid = false;
-                    break;
+                    return null;
                 }
 
-                Tuple<int, int> currentPeriod = list[index].Item1;
-                int currentCount = list[index].Item2;
+                Tuple<int, int> currentPeriod = outList[index].Item1;
+                int currentCount = outList[index].Item2;
 
-                list[index] = new Tuple<Tuple<int, int>, int>(currentPeriod, currentCount + 1);
+                outList[index] = new Tuple<Tuple<int, int>, int>(currentPeriod, currentCount + 1);
             }
 
-            if (isValid == false)
-            {
-                return null;
-            }
-
-            return list;
+            return outList;
         }
     }
 }
