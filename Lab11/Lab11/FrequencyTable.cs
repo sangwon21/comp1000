@@ -17,7 +17,6 @@ namespace Lab11
             }
 
             int diff = maxValue - minValue;
-            int minInterval = Math.Max(1, diff / maxBinCount);
 
             if (diff < 0)
             {
@@ -26,42 +25,33 @@ namespace Lab11
 
             if (diff == 0)
             {
-                List<Tuple<Tuple<int, int>, int>> outList = new List<Tuple<Tuple<int, int>, int>>(1);
+                List<Tuple<Tuple<int, int>, int>> tmp = new List<Tuple<Tuple<int, int>, int>>(1);
 
                 Tuple<int, int> period = new Tuple<int, int>(maxValue, maxValue + 1);
-                outList.Add(new Tuple<Tuple<int, int>, int>(period, data.Length));
+                tmp.Add(new Tuple<Tuple<int, int>, int>(period, data.Length));
 
-                return outList;
+                return tmp;
             }
 
-            for (int i = minInterval; i <= diff; ++i)
-            {
-                List<Tuple<Tuple<int, int>, int>> outList = tryPutDataIntoHistogram(data, minValue, maxValue, i, maxBinCount);
+            int interval = (int)Math.Ceiling(diff / (double)maxBinCount + 0.0000000001);
+            int binCount = (int)Math.Ceiling(diff / (double)interval);
 
-                if (outList != null)
-                {
-                    return outList;
-                }
+            if (diff == interval * binCount)
+            {
+                ++binCount;
             }
 
-            return null;
-        }
+            List<Tuple<Tuple<int, int>, int>> outList = new List<Tuple<Tuple<int, int>, int>>(binCount);
 
-        private static List<Tuple<Tuple<int, int>, int>> tryPutDataIntoHistogram(int[] data, int start, int end, int interval, int maxBinCount)
-        {
-            int outListCount = Math.Min((end - start) / interval + 1, maxBinCount);
-
-            List<Tuple<Tuple<int, int>, int>> outList = new List<Tuple<Tuple<int, int>, int>>(outListCount);
-
-            for (int i = 0; i < outListCount; ++i)
+            for (int i = 0; i < binCount; ++i)
             {
-                Tuple<int, int> period = new Tuple<int, int>(start + i * interval, start + (i + 1) * interval);
+                Tuple<int, int> period = new Tuple<int, int>(minValue + i * interval, minValue + (i + 1) * interval);
                 outList.Add(new Tuple<Tuple<int, int>, int>(period, 0));
             }
 
             foreach (int datum in data)
             {
-                int index = (datum - start) / interval;
+                int index = (datum - minValue) / interval;
 
                 if (index >= maxBinCount)
                 {
@@ -73,6 +63,7 @@ namespace Lab11
 
                 outList[index] = new Tuple<Tuple<int, int>, int>(currentPeriod, currentCount + 1);
             }
+
 
             return outList;
         }
