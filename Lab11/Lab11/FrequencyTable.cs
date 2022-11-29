@@ -34,7 +34,7 @@ namespace Lab11
                 return outList;
             }
 
-            for (int i = minInterval; i < diff; ++i)
+            for (int i = minInterval; i <= diff; ++i)
             {
                 List<Tuple<Tuple<int, int>, int>> outList = tryPutDataIntoHistogram(data, minValue, maxValue, i, maxBinCount);
 
